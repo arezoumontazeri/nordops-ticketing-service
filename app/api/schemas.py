@@ -20,3 +20,6 @@ class TicketOut(BaseModel):
     title: str
     description: Optional[str]
     status: TicketStatus
+
+    class Config:
+        from_attributes = True
