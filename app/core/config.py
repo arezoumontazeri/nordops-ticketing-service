@@ -6,6 +6,6 @@ class Settings(BaseSettings):
 
     app_name: str = "NordOps Ticketing Service"
     log_level: str = "INFO"
-    database_url: str = "postgresql://placeholder"
+    database_url: str = "postgresql+psycopg2://postgres:postgres@localhost:5432/ticketing"
 
 settings = Settings()
