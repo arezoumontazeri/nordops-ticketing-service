@@ -12,5 +12,20 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: ticketing-app
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      APP_NAME: NordOps Ticketing Service
+      LOG_LEVEL: INFO
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@postgres:5432/ticketing
+    ports:
+      - "8000:8000"
+
 volumes:
   postgres_data:
