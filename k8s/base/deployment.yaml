@@ -26,3 +26,15 @@ spec:
               value: "INFO"
             - name: DATABASE_URL
               value: "postgresql+psycopg2://postgres:postgres@postgres:5432/ticketing"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
