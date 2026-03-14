@@ -19,13 +19,11 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 8000
-          env:
-            - name: APP_NAME
-              value: "NordOps Ticketing Service"
-            - name: LOG_LEVEL
-              value: "INFO"
-            - name: DATABASE_URL
-              value: "postgresql+psycopg2://postgres:postgres@postgres:5432/ticketing"
+          envFrom:
+            - configMapRef:
+                name: ticketing-config
+            - secretRef:
+                name: ticketing-secre 
           livenessProbe:
             httpGet:
               path: /healthz
