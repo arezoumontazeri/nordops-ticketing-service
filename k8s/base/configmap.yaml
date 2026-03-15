@@ -6,6 +6,7 @@ metadata:
 data:
   APP_NAME: "NordOps Ticketing Service"
   LOG_LEVEL: "INFO"
-  DATABASE_HOST: "postgres"
-  DATABASE_PORT: "5432"
-  DATABASE_NAME: "ticketing"
+    #DATABASE_HOST: "postgres"
+    # DATABASE_PORT: "5432"
+    #DATABASE_NAME: "ticketing"
+  DATABASE_URL: "postgresql+psycopg2://postgres:postgres@postgres:5432/ticketing"
