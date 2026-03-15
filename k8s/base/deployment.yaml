@@ -23,7 +23,7 @@ spec:
             - configMapRef:
                 name: ticketing-config
             - secretRef:
-                name: ticketing-secre 
+                name: ticketing-secret 
           livenessProbe:
             httpGet:
               path: /healthz
