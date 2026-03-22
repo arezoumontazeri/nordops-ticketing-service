@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
         - name: ticketing-app
-          image: nordops-ticketing:dev
-          imagePullPolicy: Never
+          image: arezoumontazeri/nordops-ticketing:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
           envFrom:
