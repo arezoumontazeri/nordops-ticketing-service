@@ -27,7 +27,7 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/nordops-ticketing:latest
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build-and-push
     if: github.ref == 'refs/heads/main'
 
