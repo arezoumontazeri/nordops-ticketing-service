@@ -1,137 +1,213 @@
 # NordOps Ticketing Service
 
-A production-ready Ticketing Service built with FastAPI to demonstrate modern DevOps and Cloud Engineering best practices.
+A production-like ticketing service built to demonstrate modern DevOps and Cloud-Native engineering practices.
 
-This project is part of my DevOps portfolio and focuses on building, containerizing, deploying, monitoring, and scaling a backend service using real-world production patterns.
+This project started as a simple FastAPI backend and evolved into a full platform-style application with:
 
----
-
-## 🚀 Project Vision
-
-This repository will evolve into a fully production-like backend system that includes:
-
-- Clean backend architecture
+- PostgreSQL persistence
 - Docker containerization
-- Kubernetes deployment with Helm
-- Observability stack (Prometheus, Grafana, Loki)
-- CI/CD automation with GitHub Actions
-- Infrastructure as Code with Terraform
-- AWS EKS deployment
+- Kubernetes deployment
+- Prometheus metrics
+- Grafana dashboards
+- CI/CD with GitHub Actions
 
-The goal is to simulate a real-world production environment.
-
----
-
-## 🏗 Planned Architecture
-
-Client → Ingress → FastAPI API → PostgreSQL  
-                           ↓  
-                 Prometheus / Grafana / Loki  
-
-A full architecture diagram will be added as the project evolves.
+The goal of this project is to simulate how a real backend service is built, deployed, monitored, and maintained in a production-oriented environment.
 
 ---
 
-## 🧱 Tech Stack
+## Project Overview
+
+NordOps Ticketing Service is a REST API for managing support-style tickets.
+
+It supports:
+
+- Creating tickets
+- Listing tickets
+- Updating tickets
+- Deleting tickets
+- Monitoring service health
+- Exposing metrics for observability
+
+This project is designed as a DevOps portfolio project and focuses on real deployment and operations workflows, not only backend development.
+
+---
+
+## Architecture
+
+High-level request flow:
+
+Client → Ingress → Kubernetes Service → FastAPI Application → PostgreSQL
+
+Observability flow:
+
+FastAPI `/metrics` → Prometheus → Grafana
+
+CI/CD flow:
+
+GitHub Push → GitHub Actions → Docker Build → Docker Hub → Kubernetes Deploy
+
+---
+
+## Tech Stack
 
 ### Backend
 
-- Python 3.12
+- Python
 - FastAPI
 - SQLAlchemy
+- Alembic
 - PostgreSQL
 
-### DevOps & Infrastructure
+### Containerization
 
 - Docker
-- Kubernetes
-- Helm
-- GitHub Actions
-- Terraform
+- Docker Compose
+
+### Kubernetes
+
+- k3s
+- Deployment
+- Service
+- Ingress
+- ConfigMap
+- Secret
+- StatefulSet
+- PersistentVolumeClaim
 
 ### Observability
 
 - Prometheus
 - Grafana
-- Loki
 
-### Cloud
+### CI/CD
 
-- AWS (EKS, VPC, IAM)
+- GitHub Actions
+- Docker Hub
 
 ---
 
-## 📂 Project Structure (Initial Phase)
+## Features
 
+- REST API for ticket management
+- PostgreSQL-backed persistent storage
+- Database migrations with Alembic
+- Dockerized application runtime
+- Kubernetes deployment with ingress
+- Liveness and readiness probes
+- ConfigMap and Secret-based configuration
+- Stateful PostgreSQL deployment
+- Prometheus metrics endpoint
+- Grafana integration
+- Automated build and deployment pipeline
+
+---
+
+## Repository Structure
+
+```text
 nordops-ticketing-service/
-├─ app/
-│ ├─ main.py
-│ ├─ api/
-│ ├─ core/
-│ └─ tests/
-├─ docker/
-├─ k8s/
-├─ observability/
-├─ scripts/
-└─ README.md
+├── app/
+│   ├── api/
+│   ├── core/
+│   ├── db/
+│   └── main.py
+├── alembic/
+├── docker/
+│   ├── Dockerfile
+│   ├── docker-compose.yml
+│   └── entrypoint.sh
+├── k8s/
+│   └── base/
+├── monitoring/
+├── .github/
+│   └── workflows/
+├── requirements.txt
+└── README.md
+
+
+```
+
+## Local Development
+
+---
+---  
+  ### Run the API locally  
+
+```bash  
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+
+### Health checks
+
+curl http://localhost:8000/healthz  
+curl http://localhost:8000/readyz
 
 ---
 
-## 🔧 Current Status
+## Run with Docker
 
-- [ ] Repository initialized
-- [ ] Basic FastAPI service
-- [ ] Database integration
-- [ ] Docker setup
-- [ ] Kubernetes deployment
-- [ ] Monitoring stack
-- [ ] CI/CD pipeline
-- [ ] AWS deployment
+### Build image
 
----
+docker build -f docker/Dockerfile -t nordops-ticketing:dev .
 
-## 🩺 Health Endpoint
+### Run with Docker Compose
 
-GET /healthz
-
-Response:
-{"status":"ok"}
+docker compose -f docker/docker-compose.yml up --build
 
 ---
 
-## 📈 Development Roadmap
+## Run on Kubernetes
 
-The service will progressively include:
+This project is deployed locally on k3s.
 
-- Structured JSON logging
-- Readiness & liveness probes
-- Metrics endpoint (/metrics)
-- Horizontal Pod Autoscaling
-- Infrastructure as Code
-- Cloud-native deployment
+Main Kubernetes resources:
 
----
+- Namespace
+- Deployment
+- Service
+- Ingress
+- ConfigMap
+- Secret
+- PostgreSQL StatefulSet
+- PersistentVolumeClaim
 
-## 🎯 Purpose of This Project
+### Example commands
 
-This project demonstrates:
-
-- Production-oriented backend design
-- DevOps automation practices
-- Cloud-native architecture thinking
-- Monitoring and observability setup
-- Infrastructure as Code implementation
-
-It reflects real-world backend and DevOps engineering workflows.
+kubectl get pods -n ticketing  
+kubectl get svc -n ticketing  
+kubectl get ingress -n ticketing
 
 ---
 
-## 👩‍💻 Author
+## Observability
 
-Arezou — DevOps-focused Engineer based in Gothenburg, Sweden.
+The application exposes Prometheus-compatible metrics at:
+
+/metrics
+
+Prometheus scrapes the application metrics and Grafana is used for visualization.
+
+Example metrics:
+
+- `http_requests_total`
+- `http_request_duration_seconds`
 
 ---
 
-## 📜 License
+## CI/CD
 
-MIT
+GitHub Actions is used for CI/CD.
+
+Current pipeline includes:
+
+- Docker image build
+- Push to Docker Hub
+- Kubernetes deployment update
+
+Flow:
+
+1. Push to `main`
+2. GitHub Actions builds image
+3. Image is pushed to Docker Hub
+4. Kubernetes deployment is updated
+
+---
