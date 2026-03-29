@@ -1,6 +1,7 @@
 resource "aws_security_group" "ticketing_sg" {
   name        = "ticketing-sg"
   description = "Allow SSH and HTTP"
+  vpc_id      = aws_vpc.main.id
 
   ingress {
     description = "SSH"
@@ -14,6 +15,14 @@ resource "aws_security_group" "ticketing_sg" {
     description = "HTTP"
     from_port   = 80
     to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Kubernetes API / optional testing"
+    from_port   = 6443
+    to_port     = 6443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
